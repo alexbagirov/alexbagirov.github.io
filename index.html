@@ -6,15 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon"
-    href="https://cdn0.iconfinder.com/data/icons/ikooni-outline-free-basic/128/free-20-16.png"
-    type="image/x-icon" />
 
     <meta property="og:site_name" content="Timetable" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="НЯК Push" />
     <meta property="og:description" content="Все новости - мгновенно." />
-    <meta property="og:url" content="https://alexbagirov.github.io/nyk/" />
+    <meta property="og:url" content="https://alexbagirov.github.io/" />
 
     <title>НЯК Push</title>
 
@@ -37,8 +34,8 @@
       var OneSignal = window.OneSignal || [];
       OneSignal.push(["init", {
         appId: "da21884b-12d7-4daf-a1ff-ab5c3032f8d3",
-        autoRegister: false,
-        safari_web_id: "web.onesignal.auto.4924b4f0-134c-425c-876d-dc71d8371c02",
+        autoRegister: true,
+        safari_web_id: "web.onesignal.auto.0d6d1ede-d24a-45d0-ba73-2f88839c0735",
         notifyButton: {
           enable: false
         },
@@ -49,68 +46,67 @@
       }]);
     </script>
 
-    <script>
-      OneSignal.push(function() {
-        var isPushSupported = OneSignal.isPushNotificationsSupported();
-        if (!isPushSupported) {
-          document.getElementById("enable").disabled = true;
-          document.getElementById("disable").disabled = true;
-        }
-      });
-    </script>
-
-    <script>
-      function subscribe() {
-        OneSignal.push(function() {
-          OneSignal.registerForPushNotifications();
-        });
-
-        document.getElementById("enable").style.background='#606c76';
-        document.getElementById("enable").value='Готово!'
-      }
-    </script>
-
-    <script>
-      function unsubscribe() {
-        OneSignal.push(["setSubscription", false]);
-
-        document.getElementById("disable").value='Готово!'
-      }
-    </script>
+    <style>
+    .center-div
+    {
+      position: absolute;
+      margin: auto;
+      top: 30%;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 60%;
+      height: auto;
+    }
+    </style>
 </head>
 
 <body>
-    <div class="container" id="name">
-      <div class="column" style="margin: 40px;">
+      <div class ="center-div">
         <h1 align="center">НЯК Push</h1>
 
         <p align="center">
           Чтобы получать мгновенные уведомления о новых постах в Клубе
-          Народной карты, достаточно нажать кнопку ниже и дать согласие
-          на получение уведомлений в браузере.
+          Народной карты, достаточно дать согласие на получение уведомлений
+          в браузере. Пропустили окно? Нажмите
+          <a href="#" id="subscribe-link">здесь</a>.
         </p>
 
-        <h3 align="center" id="setup_head">Подключение</h3>
+        <p align="center">
+          <b>Внимание</b>: данная функция не поддерживается телефонами и
+          планшетами под управлением ОС iOS.
+        </p>
 
-        <form>
-          <fieldset>
-
-            <input class="button-primary"
-            type="submit" value="включить"
-            id="enable" onclick="subscribe(); return false;" />
-
-            <input class="button button-clear"
-            type="submit" id="disable" value="выключить"
-            onclick="unsubscribe(); return false;" />
-
-          </fieldset>
-        </form>
 
         <p align="center"><i class="material-icons">code</i> by
-           <a href="https://github.com/alexbagirov">alexbagirov</a>
+          <a href="https://github.com/alexbagirov">alexbagirov</a>
         </p>
       </div>
-    </div>
+
+      <script>
+        function subscribe() {
+            OneSignal.push(["registerForPushNotifications"]);
+            event.preventDefault();
+        }
+
+        var OneSignal = OneSignal || [];
+        /* This example assumes you've already initialized OneSignal */
+        OneSignal.push(function() {
+            // If we're on an unsupported browser, do nothing
+            if (!OneSignal.isPushNotificationsSupported()) {
+                return;
+            }
+            OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+                if (isEnabled) {
+                    // The user is subscribed to notifications
+                    // Don't show anything
+                } else {
+                    document.getElementById("subscribe-link").addEventListener('click', subscribe);
+                    document.getElementById("subscribe-link").style.display = '';
+                }
+            });
+        });
+      </script>
 </body>
 
 </html>
